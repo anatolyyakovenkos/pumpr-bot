@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pumpr Bot</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --green: #00FF47;
+            --green-dim: #00cc39;
+            --green-dark: #00a82e;
+            --green-glow: rgba(0, 255, 71, 0.15);
+            --green-glow-strong: rgba(0, 255, 71, 0.3);
+            --bg: #0a0a0a;
+            --bg-sidebar: #111111;
+            --bg-card: #151515;
+            --bg-card-hover: #1a1a1a;
+            --border: #1e1e1e;
+            --border-light: #2a2a2a;
+            --text: #ffffff;
+            --text-dim: #999999;
+            --text-muted: #666666;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            overflow-x: hidden;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 240px;
+            min-width: 240px;
+            background: var(--bg-sidebar);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+            overflow-y: auto;
+        }
+
+        .sidebar-logo {
+            padding: 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-logo .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--green);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .sidebar-logo span {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--text);
+            letter-spacing: -0.3px;
+        }
+
+        .sidebar-logo .badge {
+            font-size: 10px;
+            font-weight: 600;
+            background: var(--green);
+            color: #000;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: auto;
+        }
+
+        .sidebar-section {
+            padding: 16px 0 8px;
+        }
+
+        .sidebar-section-title {
+            padding: 0 16px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-muted);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.15s;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .sidebar-link.active {
+            color: var(--green);
+            background: var(--green-glow);
+        }
+
+        .sidebar-link .icon {
+            width: 20px;
+            text-align: center;
+            font-size: 15px;
+            opacity: 0.7;
+        }
+
+        .sidebar-link.active .icon {
+            opacity: 1;
+        }
+
+        .sidebar-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 8px 16px;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+
+        .sidebar-footer a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            padding: 6px 0;
+            transition: color 0.15s;
+        }
+
+        .sidebar-footer a:hover {
+            color: var(--green);
+        }
+
+        /* ── Main Content ── */
+        .main {
+            margin-left: 240px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        /* ── Top Banner ── */
+        .banner {
+            background: var(--green);
+            color: #000;
+            text-align: center;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .banner a {
+            color: #000;
+            text-decoration: underline;
+            font-weight: 700;
+        }
+
+        /* ── Top Nav ── */
+        .topnav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 32px;
+            border-bottom: 1px solid var(--border);
+            background: rgba(10,10,10,0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topnav-links {
+            display: flex;
+            gap: 4px;
+        }
+
+        .topnav-links a {
+            padding: 6px 14px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-dim);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.15s;
+        }
+
+        .topnav-links a:hover {
+            color: var(--text);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .topnav-links a.active {
+            color: var(--green);
+            background: var(--green-glow);
+        }
+
+        .topnav-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* ── Buttons ── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--green);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            background: var(--green-dim);
+            box-shadow: 0 0 20px var(--green-glow-strong);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--green);
+            color: var(--green);
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 13px;
+        }
+
+        /* ── Hero ── */
+        .hero {
+            text-align: center;
+            padding: 80px 32px 60px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 400px;
+            background: radial-gradient(ellipse, var(--green-glow) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            background: var(--green-glow);
+            border: 1px solid rgba(0,255,71,0.2);
+            border-radius: 100px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--green);
+            margin-bottom: 24px;
+        }
+
+        .hero-badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.05;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .hero h1 .green {
+            color: var(--green);
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: var(--text-dim);
+            max-width: 600px;
+            margin: 0 auto 12px;
+            line-height: 1.5;
+        }
+
+        .hero p.sub {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ── Terminal Block ── */
+        .terminal {
+            max-width: 520px;
+            margin: 48px auto 0;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            background: rgba(255,255,255,0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .terminal-dot.red { background: #ff5f57; }
+        .terminal-dot.yellow { background: #febc2e; }
+        .terminal-dot.gr { background: #28c840; }
+
+        .terminal-title {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-left: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-body {
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+        }
+
+        .terminal-body .comment {
+            color: var(--text-muted);
+        }
+
+        .terminal-body .cmd {
+            color: var(--text);
+        }
+
+        .terminal-body .prompt {
+            color: var(--green);
+        }
+
+        /* ── Section ── */
+        .section {
+            padding: 80px 32px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-header h2 {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+
+        .section-header p {
+            font-size: 18px;
+            color: var(--text-dim);
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        /* ── Feature Cards ── */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 28px 24px;
+            transition: all 0.25s;
+        }
+
+        .feature-card:hover {
+            border-color: var(--green);
+            background: var(--bg-card-hover);
+            box-shadow: 0 0 30px rgba(0,255,71,0.05);
+        }
+
+        .feature-icon {
+            width: 44px;
+            height: 44px;
+            background: var(--green-glow);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ── SDK Section ── */
+        .sdk-section {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .sdk-block {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        .sdk-block-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+        }
+
+        .sdk-block-header span {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .sdk-block-header .lang {
+            font-size: 12px;
+            color: var(--green);
+            font-family: 'JetBrains Mono', monospace;
+            background: var(--green-glow);
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .sdk-block pre {
+            padding: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            overflow-x: auto;
+            color: var(--text-dim);
+        }
+
+        .sdk-block pre .kw { color: #c792ea; }
+        .sdk-block pre .fn { color: #82aaff; }
+        .sdk-block pre .str { color: var(--green); }
+        .sdk-block pre .cm { color: #546e7a; }
+        .sdk-block pre .num { color: #f78c6c; }
+        .sdk-block pre .op { color: #89ddff; }
+        .sdk-block pre .var { color: #eeffff; }
+
+        /* ── How It Works ── */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .step {
+            text-align: center;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: 2px solid var(--green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--green);
+            margin: 0 auto 16px;
+        }
+
+        .step h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            font-size: 14px;
+            color: var(--text-dim);
+            line-height: 1.6;
+        }
+
+        /* ── Stats ── */
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            padding: 40px 32px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--green);
+            letter-spacing: -1px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ── Footer ── */
+        footer {
+            padding: 40px 32px;
+            border-top: 1px solid var(--border);
+            text-align: center;
+        }
+
+        footer p {
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+
+        footer .links {
+            display: flex;
+            gap: 24px;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        footer .links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.15s;
+        }
+
+        footer .links a:hover { color: var(--green); }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .sidebar { display: none; }
+            .main { margin-left: 0; }
+            .hero h1 { font-size: 40px; letter-spacing: -1px; }
+            .hero p { font-size: 17px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .steps { grid-template-columns: 1fr; gap: 24px; }
+            .stats-bar { flex-wrap: wrap; gap: 32px; }
+            .section-header h2 { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ── Sidebar ── -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+        <div class="logo-icon">P</div>
+        <span>Pumpr</span>
+        <span class="badge">SDK</span>
+    </div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Navigate</div>
+        <a class="sidebar-link active" href="#home">
+            <span class="icon">&#9750;</span> Home
+        </a>
+        <a class="sidebar-link" href="#features">
+            <span class="icon">&#9672;</span> Features
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#8801;</span> SDK
+        </a>
+        <a class="sidebar-link" href="#how-it-works">
+            <span class="icon">&#10148;</span> How It Works
+        </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Docs</div>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#128214;</span> Getting Started
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#128268;</span> Installation
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#9889;</span> Quick Start
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#128176;</span> Buy &amp; Sell Tokens
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#127919;</span> Launch a Token
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#128202;</span> Price &amp; Market Data
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#128274;</span> Wallet Management
+        </a>
+        <a class="sidebar-link" href="#sdk">
+            <span class="icon">&#9881;</span> Configuration
+        </a>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-section">
+        <div class="sidebar-section-title">Resources</div>
+        <a class="sidebar-link" href="#">
+            <span class="icon">&#128640;</span> API Reference
+        </a>
+        <a class="sidebar-link" href="#">
+            <span class="icon">&#128421;</span> GitHub
+        </a>
+        <a class="sidebar-link" href="#">
+            <span class="icon">&#128172;</span> Discord
+        </a>
+        <a class="sidebar-link" href="#">
+            <span class="icon">&#128038;</span> Twitter / X
+        </a>
+    </div>
+
+    <div class="sidebar-footer">
+        <a href="#">Built on Solana &#9978;</a>
+        <a href="#">Powered by PumpFun SDK</a>
+    </div>
+</aside>
+
+<!-- ── Main Content ── -->
+<div class="main">
+
+    <!-- Banner -->
+    <div class="banner">
+        Officially built on the new PumpFun SDK &mdash; Solana-native token launching, trading, and agent automation. <a href="#sdk">Explore the SDK &rarr;</a>
+    </div>
+
+    <!-- Top Nav -->
+    <nav class="topnav" id="home">
+        <div class="topnav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="#features">Features</a>
+            <a href="#sdk">SDK</a>
+            <a href="#how-it-works">How It Works</a>
+        </div>
+        <div class="topnav-actions">
+            <a href="#sdk" class="btn btn-outline btn-sm">Read Docs</a>
+            <a href="#" class="btn btn-primary btn-sm">Launch App</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-badge">
+            <span class="dot"></span>
+            Live on Solana Mainnet
+        </div>
+        <h1>
+            Pump tokens.<br>
+            <span class="green">Fund your agent.</span>
+        </h1>
+        <p>Pumpr Bot is an AI-powered trading agent built on the official PumpFun SDK. Launch, buy, sell, and snipe tokens directly on Solana.</p>
+        <p class="sub">Fork of Bankr Bot &mdash; rebuilt from scratch for Solana using the PumpFun SDK. 100% open source.</p>
+        <div class="hero-buttons">
+            <a href="#" class="btn btn-primary">Launch a Token</a>
+            <a href="#sdk" class="btn btn-outline">Read the Docs</a>
+        </div>
+
+        <!-- Terminal -->
+        <div class="terminal">
+            <div class="terminal-header">
+                <span class="terminal-dot red"></span>
+                <span class="terminal-dot yellow"></span>
+                <span class="terminal-dot gr"></span>
+                <span class="terminal-title">pumpr-cli</span>
+            </div>
+            <div class="terminal-body">
+                <div><span class="prompt">$</span> <span class="cmd">npm i -g @pumpr/sdk</span></div>
+                <div class="comment"># set up your Solana wallet</div>
+                <div><span class="prompt">$</span> <span class="cmd">pumpr init --network mainnet</span></div>
+                <div class="comment"># launch a token via PumpFun</div>
+                <div><span class="prompt">$</span> <span class="cmd">pumpr launch --name "MyCoin" --ticker $MINE</span></div>
+                <div class="comment"># buy a token</div>
+                <div><span class="prompt">$</span> <span class="cmd">pumpr buy &lt;token_address&gt; --sol 0.5</span></div>
+                <div class="comment"># check your portfolio</div>
+                <div><span class="prompt">$</span> <span class="cmd">pumpr portfolio</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <div class="stats-bar">
+        <div class="stat">
+            <div class="stat-val">Solana</div>
+            <div class="stat-label">Native Chain</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val">PumpFun</div>
+            <div class="stat-label">Official SDK</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val">&lt;1s</div>
+            <div class="stat-label">Tx Speed</div>
+        </div>
+        <div class="stat">
+            <div class="stat-val">$0.001</div>
+            <div class="stat-label">Avg Fee</div>
+        </div>
+    </div>
+
+    <!-- Features -->
+    <section class="section" id="features">
+        <div class="section-header">
+            <h2>Everything you need to pump</h2>
+            <p>Bankr Bot, rebuilt for Solana. Powered by the official PumpFun SDK with full trading capabilities.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">&#127919;</div>
+                <h3>Token Launching</h3>
+                <p>Launch tokens directly on PumpFun's bonding curve. Set name, ticker, image, and socials. Goes live instantly on Solana.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128176;</div>
+                <h3>Buy &amp; Sell</h3>
+                <p>Buy and sell any PumpFun token with SOL. Set slippage, priority fees, and execute trades in under a second.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#9889;</div>
+                <h3>Snipe New Launches</h3>
+                <p>Monitor PumpFun for new token launches and automatically snipe them. Configurable filters for dev wallet, initial buy size, and more.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128202;</div>
+                <h3>Real-Time Data</h3>
+                <p>Live price feeds, bonding curve progress, holder distribution, and market cap tracking via the PumpFun API.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#129302;</div>
+                <h3>AI Agent Mode</h3>
+                <p>Let the bot trade autonomously based on configurable strategies. Uses on-chain data and social signals to find alpha.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">&#128268;</div>
+                <h3>PumpFun SDK Native</h3>
+                <p>Built directly on the official PumpFun SDK. No wrappers, no middlemen. Direct Solana program interaction.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SDK Code Examples -->
+    <section class="section" id="sdk" style="background: rgba(255,255,255,0.01);">
+        <div class="section-header">
+            <h2>Built with the PumpFun SDK</h2>
+            <p>Forked from Bankr Bot on Base, rebuilt from scratch for Solana using the official PumpFun TypeScript SDK.</p>
+        </div>
+        <div class="sdk-section">
+
+            <div class="sdk-block">
+                <div class="sdk-block-header">
+                    <span>Initialize the SDK</span>
+                    <span class="lang">TypeScript</span>
+                </div>
+                <pre><span class="kw">import</span> { <span class="var">PumpFunSDK</span> } <span class="kw">from</span> <span class="str">"pumpdotfun-sdk"</span>;
+<span class="kw">import</span> { <span class="var">Connection</span>, <span class="var">Keypair</span> } <span class="kw">from</span> <span class="str">"@solana/web3.js"</span>;
+<span class="kw">import</span> { <span class="var">AnchorProvider</span> } <span class="kw">from</span> <span class="str">"@coral-xyz/anchor"</span>;
+
+<span class="kw">const</span> <span class="var">connection</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">Connection</span>(<span class="str">"https://api.mainnet-beta.solana.com"</span>);
+<span class="kw">const</span> <span class="var">wallet</span> <span class="op">=</span> <span class="fn">Keypair.fromSecretKey</span>(<span class="var">yourSecretKey</span>);
+<span class="kw">const</span> <span class="var">provider</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">AnchorProvider</span>(<span class="var">connection</span>, <span class="var">wallet</span>);
+
+<span class="kw">const</span> <span class="var">sdk</span> <span class="op">=</span> <span class="kw">new</span> <span class="fn">PumpFunSDK</span>(<span class="var">provider</span>);</pre>
+            </div>
+
+            <div class="sdk-block">
+                <div class="sdk-block-header">
+                    <span>Launch a Token</span>
+                    <span class="lang">TypeScript</span>
+                </div>
+                <pre><span class="cm">// Generate a new mint keypair for your token</span>
+<span class="kw">const</span> <span class="var">mintKeypair</span> <span class="op">=</span> <span class="fn">Keypair.generate</span>();
+
+<span class="cm">// Create and launch the token on PumpFun's bonding curve</span>
+<span class="kw">const</span> <span class="var">result</span> <span class="op">=</span> <span class="kw">await</span> <span class="var">sdk</span>.<span class="fn">createAndBuy</span>(
+  <span class="var">wallet</span>,           <span class="cm">// your wallet keypair</span>
+  <span class="var">mintKeypair</span>,      <span class="cm">// new token mint</span>
+  {
+    <span class="var">name</span>: <span class="str">"Pumpr Token"</span>,
+    <span class="var">symbol</span>: <span class="str">"$PUMPR"</span>,
+    <span class="var">description</span>: <span class="str">"Launched via Pumpr Bot"</span>,
+    <span class="var">file</span>: <span class="var">tokenImageBlob</span>,
+  },
+  <span class="num">0.1</span> <span class="op">*</span> <span class="num">1e9</span>,        <span class="cm">// buy 0.1 SOL worth on launch</span>
+  <span class="num">100</span>,              <span class="cm">// slippage basis points</span>
+  { <span class="var">unitLimit</span>: <span class="num">250000</span>, <span class="var">unitPrice</span>: <span class="num">250000</span> }
+);</pre>
+            </div>
+
+            <div class="sdk-block">
+                <div class="sdk-block-header">
+                    <span>Buy &amp; Sell Tokens</span>
+                    <span class="lang">TypeScript</span>
+                </div>
+                <pre><span class="cm">// Buy tokens on PumpFun</span>
+<span class="kw">await</span> <span class="var">sdk</span>.<span class="fn">buy</span>(
+  <span class="var">wallet</span>,
+  <span class="var">mintAddress</span>,         <span class="cm">// token mint public key</span>
+  <span class="num">0.5</span> <span class="op">*</span> <span class="num">1e9</span>,           <span class="cm">// 0.5 SOL</span>
+  <span class="num">200</span>,                  <span class="cm">// slippage bps</span>
+  { <span class="var">unitLimit</span>: <span class="num">250000</span>, <span class="var">unitPrice</span>: <span class="num">250000</span> }
+);
+
+<span class="cm">// Sell all of a token</span>
+<span class="kw">await</span> <span class="var">sdk</span>.<span class="fn">sell</span>(
+  <span class="var">wallet</span>,
+  <span class="var">mintAddress</span>,
+  <span class="var">BigInt</span>(<span class="var">tokenBalance</span>), <span class="cm">// amount of tokens to sell</span>
+  <span class="num">200</span>,
+  { <span class="var">unitLimit</span>: <span class="num">250000</span>, <span class="var">unitPrice</span>: <span class="num">250000</span> }
+);</pre>
+            </div>
+
+            <div class="sdk-block">
+                <div class="sdk-block-header">
+                    <span>Listen for New Launches</span>
+                    <span class="lang">TypeScript</span>
+                </div>
+                <pre><span class="cm">// Subscribe to real-time PumpFun token creation events</span>
+<span class="var">sdk</span>.<span class="fn">addEventListener</span>(<span class="str">"createEvent"</span>, (<span class="var">event</span>) <span class="op">=&gt;</span> {
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`New token: </span><span class="op">${</span><span class="var">event</span>.<span class="var">name</span><span class="op">}</span><span class="str"> (</span><span class="op">${</span><span class="var">event</span>.<span class="var">symbol</span><span class="op">}</span><span class="str">)`</span>);
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`Mint: </span><span class="op">${</span><span class="var">event</span>.<span class="var">mint</span>.<span class="fn">toBase58</span>()<span class="op">}</span><span class="str">`</span>);
+
+  <span class="cm">// Auto-buy logic</span>
+  <span class="kw">if</span> (<span class="fn">meetsFilters</span>(<span class="var">event</span>)) {
+    <span class="kw">await</span> <span class="var">sdk</span>.<span class="fn">buy</span>(<span class="var">wallet</span>, <span class="var">event</span>.<span class="var">mint</span>, <span class="num">0.1</span> <span class="op">*</span> <span class="num">1e9</span>, <span class="num">500</span>);
+  }
+});
+
+<span class="cm">// Also listen for trades</span>
+<span class="var">sdk</span>.<span class="fn">addEventListener</span>(<span class="str">"tradeEvent"</span>, (<span class="var">event</span>) <span class="op">=&gt;</span> {
+  <span class="var">console</span>.<span class="fn">log</span>(<span class="str">`Trade: </span><span class="op">${</span><span class="var">event</span>.<span class="var">isBuy</span> <span class="op">?</span> <span class="str">"BUY"</span> <span class="op">:</span> <span class="str">"SELL"</span><span class="op">}</span><span class="str"> </span><span class="op">${</span><span class="var">event</span>.<span class="var">solAmount</span><span class="op">}</span><span class="str"> SOL`</span>);
+});</pre>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="section" id="how-it-works">
+        <div class="section-header">
+            <h2>How Pumpr Bot Works</h2>
+            <p>Three steps from install to trading live on Solana.</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Install &amp; Connect</h3>
+                <p>Install the Pumpr SDK, connect your Solana wallet. Works with any Solana keypair or Phantom export.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Launch or Trade</h3>
+                <p>Launch your own token on PumpFun's bonding curve, or start buying and selling existing tokens with SOL.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Let the Agent Run</h3>
+                <p>Enable AI agent mode to autonomously monitor, snipe, and trade PumpFun tokens based on your strategy.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="links">
+            <a href="#">GitHub</a>
+            <a href="#">Docs</a>
+            <a href="#">Twitter / X</a>
+            <a href="#">Discord</a>
+            <a href="#">PumpFun SDK</a>
+        </div>
+        <p>Pumpr Bot &mdash; Forked from Bankr Bot. Rebuilt for Solana with the official PumpFun SDK. Open source.</p>
+    </footer>
+
+</div>
+
+<script>
+    // Smooth scroll for sidebar links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', e => {
+            const target = document.querySelector(a.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+
+    // Active sidebar link on scroll
+    const sections = document.querySelectorAll('section, nav.topnav');
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(s => {
+            if (s.id && window.scrollY >= s.offsetTop - 120) current = s.id;
+        });
+        sidebarLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + current) link.classList.add('active');
+        });
+    });
+</script>
+
+</body>
+</html>
