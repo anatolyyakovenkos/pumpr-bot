@@ -97,7 +97,7 @@ export class PortfolioTracker {
           `https://frontend-api-v3.pump.fun/coins/${holding.mint}`
         );
         if (resp.ok) {
-          const data = await resp.json();
+          const data = await resp.json() as { market_cap?: number; name?: string };
           if (data.market_cap) {
             console.log(
               chalk.dim(`  ${holding.mint.slice(0, 12)}... `),

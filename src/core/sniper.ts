@@ -1,23 +1,7 @@
-import { Keypair, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Keypair, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { PumpFunSDK } from "pumpdotfun-sdk";
 import chalk from "chalk";
 import { PumprConfig, SniperOptions } from "../utils/config.js";
-
-interface CreateEvent {
-  name: string;
-  symbol: string;
-  mint: { toBase58(): string };
-  uri: string;
-  initialBuy: bigint;
-}
-
-interface TradeEvent {
-  mint: { toBase58(): string };
-  solAmount: bigint;
-  tokenAmount: bigint;
-  isBuy: boolean;
-  user: { toBase58(): string };
-}
 
 export class SniperEngine {
   private sdk: PumpFunSDK;
@@ -35,7 +19,7 @@ export class SniperEngine {
     let tokenCount = 0;
 
     // Listen for new token creations
-    this.sdk.addEventListener("createEvent", async (event: CreateEvent) => {
+    this.sdk.addEventListener("createEvent", async (event: any) => {
       tokenCount++;
       const mintStr = event.mint.toBase58();
 
@@ -63,7 +47,7 @@ export class SniperEngine {
 
         const result = await this.sdk.buy(
           this.wallet,
-          event.mint,
+          new PublicKey(event.mint.toBase58()),
           lamports,
           BigInt(opts.slippageBps),
           {
@@ -85,7 +69,7 @@ export class SniperEngine {
     });
 
     // Listen for trade activity
-    this.sdk.addEventListener("tradeEvent", (event: TradeEvent) => {
+    this.sdk.addEventListener("tradeEvent", (event: any) => {
       if (this.sniped.has(event.mint.toBase58())) {
         const solAmt = Number(event.solAmount) / LAMPORTS_PER_SOL;
         const action = event.isBuy ? chalk.green("BUY") : chalk.red("SELL");
@@ -104,7 +88,7 @@ export class SniperEngine {
     await new Promise(() => {});
   }
 
-  private passesFilters(event: CreateEvent): boolean {
+  private passesFilters(event: any): boolean {
     // Filter: skip tokens with very small initial buys (likely rugs)
     const minInitialBuy = BigInt(
       Math.floor((this.config.snipeFilterMinSolInCurve ?? 0) * LAMPORTS_PER_SOL)
