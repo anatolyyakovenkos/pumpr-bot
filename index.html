@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pumpr Bot</title>
+    <link rel="icon" type="image/png" href="/logo.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -11,20 +12,21 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --green: #00FF47;
-            --green-dim: #00cc39;
-            --green-dark: #00a82e;
-            --green-glow: rgba(0, 255, 71, 0.15);
-            --green-glow-strong: rgba(0, 255, 71, 0.3);
-            --bg: #0a0a0a;
-            --bg-sidebar: #111111;
-            --bg-card: #151515;
-            --bg-card-hover: #1a1a1a;
-            --border: #1e1e1e;
-            --border-light: #2a2a2a;
-            --text: #ffffff;
-            --text-dim: #999999;
-            --text-muted: #666666;
+            --green: #22c55e;
+            --green-dim: #16a34a;
+            --green-dark: #15803d;
+            --green-light: #dcfce7;
+            --green-glow: rgba(34, 197, 94, 0.1);
+            --green-glow-strong: rgba(34, 197, 94, 0.2);
+            --bg: #ffffff;
+            --bg-sidebar: #fafafa;
+            --bg-card: #f9fafb;
+            --bg-card-hover: #f3f4f6;
+            --border: #e5e7eb;
+            --border-light: #d1d5db;
+            --text: #111827;
+            --text-dim: #6b7280;
+            --text-muted: #9ca3af;
         }
 
         body {
@@ -60,15 +62,11 @@
             border-bottom: 1px solid var(--border);
         }
 
-        .sidebar-logo .logo-icon {
-            width: 32px;
-            height: 32px;
-            background: var(--green);
+        .sidebar-logo .logo-img {
+            width: 36px;
+            height: 36px;
             border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
+            object-fit: contain;
         }
 
         .sidebar-logo span {
@@ -82,7 +80,7 @@
             font-size: 10px;
             font-weight: 600;
             background: var(--green);
-            color: #000;
+            color: #fff;
             padding: 2px 6px;
             border-radius: 4px;
             margin-left: auto;
@@ -116,12 +114,12 @@
 
         .sidebar-link:hover {
             color: var(--text);
-            background: rgba(255,255,255,0.04);
+            background: rgba(0,0,0,0.04);
         }
 
         .sidebar-link.active {
-            color: var(--green);
-            background: var(--green-glow);
+            color: var(--green-dark);
+            background: var(--green-light);
         }
 
         .sidebar-link .icon {
@@ -131,9 +129,7 @@
             opacity: 0.7;
         }
 
-        .sidebar-link.active .icon {
-            opacity: 1;
-        }
+        .sidebar-link.active .icon { opacity: 1; }
 
         .sidebar-divider {
             height: 1px;
@@ -158,9 +154,7 @@
             transition: color 0.15s;
         }
 
-        .sidebar-footer a:hover {
-            color: var(--green);
-        }
+        .sidebar-footer a:hover { color: var(--green-dark); }
 
         /* ── Main Content ── */
         .main {
@@ -172,7 +166,7 @@
         /* ── Top Banner ── */
         .banner {
             background: var(--green);
-            color: #000;
+            color: #fff;
             text-align: center;
             padding: 10px 16px;
             font-size: 14px;
@@ -180,7 +174,7 @@
         }
 
         .banner a {
-            color: #000;
+            color: #fff;
             text-decoration: underline;
             font-weight: 700;
         }
@@ -192,7 +186,7 @@
             justify-content: space-between;
             padding: 12px 32px;
             border-bottom: 1px solid var(--border);
-            background: rgba(10,10,10,0.8);
+            background: rgba(255,255,255,0.85);
             backdrop-filter: blur(12px);
             position: sticky;
             top: 0;
@@ -216,12 +210,12 @@
 
         .topnav-links a:hover {
             color: var(--text);
-            background: rgba(255,255,255,0.06);
+            background: rgba(0,0,0,0.04);
         }
 
         .topnav-links a.active {
-            color: var(--green);
-            background: var(--green-glow);
+            color: var(--green-dark);
+            background: var(--green-light);
         }
 
         .topnav-actions {
@@ -248,12 +242,12 @@
 
         .btn-primary {
             background: var(--green);
-            color: #000;
+            color: #fff;
         }
 
         .btn-primary:hover {
             background: var(--green-dim);
-            box-shadow: 0 0 20px var(--green-glow-strong);
+            box-shadow: 0 4px 16px var(--green-glow-strong);
         }
 
         .btn-outline {
@@ -264,12 +258,41 @@
 
         .btn-outline:hover {
             border-color: var(--green);
-            color: var(--green);
+            color: var(--green-dark);
+            background: var(--green-glow);
         }
 
         .btn-sm {
             padding: 6px 14px;
             font-size: 13px;
+        }
+
+        .btn-icon {
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 1px solid var(--border-light);
+            color: var(--text);
+            background: var(--bg);
+            transition: all 0.15s;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .btn-icon:hover {
+            border-color: var(--green);
+            color: var(--green-dark);
+            background: var(--green-glow);
+        }
+
+        .btn-icon svg {
+            width: 16px;
+            height: 16px;
         }
 
         /* ── Hero ── */
@@ -282,13 +305,26 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
+            top: -40px;
             left: 50%;
             transform: translateX(-50%);
-            width: 600px;
-            height: 400px;
+            width: 700px;
+            height: 500px;
             background: radial-gradient(ellipse, var(--green-glow) 0%, transparent 70%);
             pointer-events: none;
+        }
+
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            position: relative;
+        }
+
+        .hero-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
         }
 
         .hero-badge {
@@ -296,12 +332,12 @@
             align-items: center;
             gap: 8px;
             padding: 6px 16px;
-            background: var(--green-glow);
-            border: 1px solid rgba(0,255,71,0.2);
+            background: var(--green-light);
+            border: 1px solid rgba(34, 197, 94, 0.3);
             border-radius: 100px;
             font-size: 13px;
             font-weight: 600;
-            color: var(--green);
+            color: var(--green-dark);
             margin-bottom: 24px;
         }
 
@@ -325,11 +361,10 @@
             letter-spacing: -2px;
             margin-bottom: 20px;
             position: relative;
+            color: var(--text);
         }
 
-        .hero h1 .green {
-            color: var(--green);
-        }
+        .hero h1 .green { color: var(--green); }
 
         .hero p {
             font-size: 20px;
@@ -356,8 +391,8 @@
         .terminal {
             max-width: 520px;
             margin: 48px auto 0;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: #1a1a2e;
+            border: 1px solid #2d2d44;
             border-radius: 10px;
             overflow: hidden;
             text-align: left;
@@ -368,8 +403,8 @@
             align-items: center;
             gap: 8px;
             padding: 10px 14px;
-            background: rgba(255,255,255,0.03);
-            border-bottom: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            border-bottom: 1px solid #2d2d44;
         }
 
         .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
@@ -379,7 +414,7 @@
 
         .terminal-title {
             font-size: 12px;
-            color: var(--text-muted);
+            color: #888;
             margin-left: 8px;
             font-family: 'JetBrains Mono', monospace;
         }
@@ -389,19 +424,12 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
             line-height: 1.8;
+            color: #e2e8f0;
         }
 
-        .terminal-body .comment {
-            color: var(--text-muted);
-        }
-
-        .terminal-body .cmd {
-            color: var(--text);
-        }
-
-        .terminal-body .prompt {
-            color: var(--green);
-        }
+        .terminal-body .comment { color: #636e7b; }
+        .terminal-body .cmd { color: #e2e8f0; }
+        .terminal-body .prompt { color: var(--green); }
 
         /* ── Section ── */
         .section {
@@ -418,6 +446,7 @@
             font-weight: 700;
             letter-spacing: -1.5px;
             margin-bottom: 12px;
+            color: var(--text);
         }
 
         .section-header p {
@@ -447,13 +476,13 @@
         .feature-card:hover {
             border-color: var(--green);
             background: var(--bg-card-hover);
-            box-shadow: 0 0 30px rgba(0,255,71,0.05);
+            box-shadow: 0 4px 24px var(--green-glow);
         }
 
         .feature-icon {
             width: 44px;
             height: 44px;
-            background: var(--green-glow);
+            background: var(--green-light);
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -466,6 +495,7 @@
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
+            color: var(--text);
         }
 
         .feature-card p {
@@ -481,8 +511,8 @@
         }
 
         .sdk-block {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
+            background: #1a1a2e;
+            border: 1px solid #2d2d44;
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 24px;
@@ -493,21 +523,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid #2d2d44;
+            background: rgba(255,255,255,0.03);
         }
 
         .sdk-block-header span {
             font-size: 14px;
             font-weight: 600;
-            color: var(--text);
+            color: #e2e8f0;
         }
 
         .sdk-block-header .lang {
             font-size: 12px;
             color: var(--green);
             font-family: 'JetBrains Mono', monospace;
-            background: var(--green-glow);
+            background: rgba(34,197,94,0.15);
             padding: 3px 8px;
             border-radius: 4px;
         }
@@ -518,12 +548,12 @@
             font-size: 13px;
             line-height: 1.7;
             overflow-x: auto;
-            color: var(--text-dim);
+            color: #a0aec0;
         }
 
         .sdk-block pre .kw { color: #c792ea; }
         .sdk-block pre .fn { color: #82aaff; }
-        .sdk-block pre .str { color: var(--green); }
+        .sdk-block pre .str { color: #a5d6a7; }
         .sdk-block pre .cm { color: #546e7a; }
         .sdk-block pre .num { color: #f78c6c; }
         .sdk-block pre .op { color: #89ddff; }
@@ -538,9 +568,7 @@
             margin: 0 auto;
         }
 
-        .step {
-            text-align: center;
-        }
+        .step { text-align: center; }
 
         .step-num {
             width: 48px;
@@ -552,14 +580,16 @@
             justify-content: center;
             font-size: 20px;
             font-weight: 700;
-            color: var(--green);
+            color: var(--green-dark);
             margin: 0 auto 16px;
+            background: var(--green-light);
         }
 
         .step h3 {
             font-size: 18px;
             font-weight: 700;
             margin-bottom: 8px;
+            color: var(--text);
         }
 
         .step p {
@@ -576,11 +606,10 @@
             padding: 40px 32px;
             border-top: 1px solid var(--border);
             border-bottom: 1px solid var(--border);
+            background: var(--bg-card);
         }
 
-        .stat {
-            text-align: center;
-        }
+        .stat { text-align: center; }
 
         .stat-val {
             font-size: 36px;
@@ -600,6 +629,7 @@
             padding: 40px 32px;
             border-top: 1px solid var(--border);
             text-align: center;
+            background: var(--bg-card);
         }
 
         footer p {
@@ -621,7 +651,7 @@
             transition: color 0.15s;
         }
 
-        footer .links a:hover { color: var(--green); }
+        footer .links a:hover { color: var(--green-dark); }
 
         /* ── Responsive ── */
         @media (max-width: 900px) {
@@ -629,6 +659,7 @@
             .main { margin-left: 0; }
             .hero h1 { font-size: 40px; letter-spacing: -1px; }
             .hero p { font-size: 17px; }
+            .hero-logo { width: 80px; height: 80px; }
             .features-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; gap: 24px; }
             .stats-bar { flex-wrap: wrap; gap: 32px; }
@@ -641,7 +672,7 @@
 <!-- ── Sidebar ── -->
 <aside class="sidebar">
     <div class="sidebar-logo">
-        <div class="logo-icon">P</div>
+        <img src="/logo.png" alt="Pumpr" class="logo-img">
         <span>Pumpr</span>
         <span class="badge">SDK</span>
     </div>
@@ -695,23 +726,17 @@
     <div class="sidebar-divider"></div>
 
     <div class="sidebar-section">
-        <div class="sidebar-section-title">Resources</div>
-        <a class="sidebar-link" href="#">
-            <span class="icon">&#128640;</span> API Reference
+        <div class="sidebar-section-title">Links</div>
+        <a class="sidebar-link" href="https://x.com/PumprBot" target="_blank" rel="noopener noreferrer">
+            <span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></span> Twitter / X
         </a>
-        <a class="sidebar-link" href="#">
-            <span class="icon">&#128421;</span> GitHub
-        </a>
-        <a class="sidebar-link" href="#">
-            <span class="icon">&#128172;</span> Discord
-        </a>
-        <a class="sidebar-link" href="#">
-            <span class="icon">&#128038;</span> Twitter / X
+        <a class="sidebar-link" href="https://github.com/anatolyyakovenkos/pumpr-bot" target="_blank" rel="noopener noreferrer">
+            <span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></span> GitHub
         </a>
     </div>
 
     <div class="sidebar-footer">
-        <a href="#">Built on Solana &#9978;</a>
+        <a href="#">Built on Solana</a>
         <a href="#">Powered by PumpFun SDK</a>
     </div>
 </aside>
@@ -733,13 +758,24 @@
             <a href="#how-it-works">How It Works</a>
         </div>
         <div class="topnav-actions">
-            <a href="#sdk" class="btn btn-outline btn-sm">Read Docs</a>
+            <a href="https://x.com/PumprBot" target="_blank" rel="noopener noreferrer" class="btn-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                @PumprBot
+            </a>
+            <a href="https://github.com/anatolyyakovenkos/pumpr-bot" target="_blank" rel="noopener noreferrer" class="btn-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub
+            </a>
+            <a href="#sdk" class="btn btn-outline btn-sm">Docs</a>
             <a href="#" class="btn btn-primary btn-sm">Launch App</a>
         </div>
     </nav>
 
     <!-- Hero -->
     <section class="hero">
+        <div class="hero-logo">
+            <img src="/logo.png" alt="Pumpr Bot">
+        </div>
         <div class="hero-badge">
             <span class="dot"></span>
             Live on Solana Mainnet
@@ -753,6 +789,14 @@
         <div class="hero-buttons">
             <a href="#" class="btn btn-primary">Launch a Token</a>
             <a href="#sdk" class="btn btn-outline">Read the Docs</a>
+            <a href="https://x.com/PumprBot" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                Follow @PumprBot
+            </a>
+            <a href="https://github.com/anatolyyakovenkos/pumpr-bot" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                Star on GitHub
+            </a>
         </div>
 
         <!-- Terminal -->
@@ -838,7 +882,7 @@
     </section>
 
     <!-- SDK Code Examples -->
-    <section class="section" id="sdk" style="background: rgba(255,255,255,0.01);">
+    <section class="section" id="sdk" style="border-top: 1px solid var(--border);">
         <div class="section-header">
             <h2>Built with the PumpFun SDK</h2>
             <p>Forked from Bankr Bot on Base, rebuilt from scratch for Solana using the official PumpFun TypeScript SDK.</p>
@@ -935,7 +979,7 @@
     </section>
 
     <!-- How It Works -->
-    <section class="section" id="how-it-works">
+    <section class="section" id="how-it-works" style="border-top: 1px solid var(--border);">
         <div class="section-header">
             <h2>How Pumpr Bot Works</h2>
             <p>Three steps from install to trading live on Solana.</p>
@@ -962,11 +1006,9 @@
     <!-- Footer -->
     <footer>
         <div class="links">
-            <a href="#">GitHub</a>
-            <a href="#">Docs</a>
-            <a href="#">Twitter / X</a>
-            <a href="#">Discord</a>
-            <a href="#">PumpFun SDK</a>
+            <a href="https://github.com/anatolyyakovenkos/pumpr-bot" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a href="#sdk">Docs</a>
+            <a href="https://x.com/PumprBot" target="_blank" rel="noopener noreferrer">Twitter / X</a>
         </div>
         <p>Pumpr Bot &mdash; Forked from Bankr Bot. Rebuilt for Solana with the official PumpFun SDK. Open source.</p>
     </footer>
@@ -974,7 +1016,6 @@
 </div>
 
 <script>
-    // Smooth scroll for sidebar links
     document.querySelectorAll('a[href^="#"]').forEach(a => {
         a.addEventListener('click', e => {
             const target = document.querySelector(a.getAttribute('href'));
@@ -985,7 +1026,6 @@
         });
     });
 
-    // Active sidebar link on scroll
     const sections = document.querySelectorAll('section, nav.topnav');
     const sidebarLinks = document.querySelectorAll('.sidebar-link');
     window.addEventListener('scroll', () => {
